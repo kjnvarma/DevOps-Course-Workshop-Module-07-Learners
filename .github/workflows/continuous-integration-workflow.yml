@@ -10,3 +10,9 @@ jobs:
 
     - name: Build C# code      # Name of step
       run: dotnet build        # dotnet build
+    - name: cd to directory       # Name of step
+      run: cd DotnetTemplate.Web        # cd to directory
+    - name: Run NPM Build       # Name of step
+      run: npm run build        # npm run build
+    - name: Run C# Tests      # Name of step
+      run: dotnet test        # dotnet test
