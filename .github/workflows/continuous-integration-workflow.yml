@@ -15,4 +15,9 @@ jobs:
     - name: Run NPM Build       # Name of step
       run: npm install        # npm run build
     - name: Run C# Tests      # Name of step
-      run: dotnet test        # dotnet test
+      run: dotnet test        # dotnet test 
+    - name: typescript code build       # Name of step
+      run: npm t        # npm run build
+    - name: typescript test       # Name of step
+      run: npm run lint        # npm run build
+    
