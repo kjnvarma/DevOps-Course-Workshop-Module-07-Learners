@@ -64,6 +64,6 @@ jobs:
         context: .
         file: ./Dockerfile        
         push: true
-        tags: veeramasa/dotnettemplate:latest
+        tags: kjnvarma/dotnettemplate:latest
         run: exit 0
       
