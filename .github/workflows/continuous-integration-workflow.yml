@@ -65,7 +65,6 @@ jobs:
         file: ./Dockerfile        
         push: true
         tags: kjnvarma/dotnettemplate:latest
-        run: exit 0
 
       - name: Heroku/buid
       - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
