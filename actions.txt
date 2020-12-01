@@ -1,0 +1,35 @@
+From Raj Rahman to Everyone:  10:17 AM
+we lost you alex
+bit robotic
+disable your cam
+From Chris Cairns to Everyone:  10:17 AM
+still bad for me
+From Patrick Morris to Me:  (Privately) 01:28 PM
+name: Continuous Integration
+on: [push]                      # Will make the workflow run every time you push to any branch
+
+jobs:
+  build:
+    name: Build and test
+    runs-on: ubuntu-latest      # Sets the build environment a machine with the latest Ubuntu installed
+    steps:
+    - name: Check out repository 
+      uses: actions/checkout@v2 # Adds a step to checkout the repository code
+
+    - name: Build C# code
+      run: dotnet build 
+
+    - name: Run C# tests
+      run: dotnet test
+
+    - name: Run npm install
+      working-directory: ./DotnetTemplate.Web
+      run: npm install
+
+    - name: Build typescript code
+      working-directory: ./DotnetTemplate.Web
+      run: npm run build
+
+    - name: Runs the linter on the typescript code
+      working-directory: ./DotnetTemplate.Web
+      run: npm run lint

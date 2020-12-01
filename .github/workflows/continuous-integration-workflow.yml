@@ -4,20 +4,66 @@ on: [push]                      # Will make the workflow run every time you push
 jobs:
   build:
     name: Build and test
-    runs-on: ubuntu-latest      # Sets the build environment a machine with the latest Ubuntu installed
+    runs-on: ubuntu-latest      # Sets the build environment a machine with the latest Ubuntu installed    
     steps:
     - uses: actions/checkout@v2 # Adds a step to checkout the repository code
-
-    - name: Build C# code      # Name of step
-      run: dotnet build        # dotnet build
-    - name: cd to directory       # Name of step
-      run: cd DotnetTemplate.Web        # cd to directory
-    - name: Run NPM Build       # Name of step
-      run: npm install        # npm run build
-    - name: Run C# Tests      # Name of step
-      run: dotnet test        # dotnet test 
-    - name: typescript code build       # Name of step
-      run: npm t        # npm run build
-    - name: typescript test       # Name of step
-      run: npm run lint        # npm run build
+    - uses: actions/setup-dotnet@v1 # Adds a step to setup the .NET
+      with:
+        dotnet-version: '3.1.x'
     
+    - name: build
+      run: dotnet build
+    
+    - name: test
+      run: dotnet test
+    
+    - name: npm ci
+      run: npm ci
+      working-directory: ./DotnetTemplate.Web
+
+    - name: npm build
+      run: npm run build
+      working-directory: ./DotnetTemplate.Web
+    
+    - name: npm t
+      run: npm t
+      working-directory: ./DotnetTemplate.Web
+    
+    - name: npm run lint
+      run: npm run lint
+      working-directory: ./DotnetTemplate.Web
+      
+    - name: exit
+      run: exit 0 
+        
+  deploy:   
+    runs-on: ubuntu-latest      # Sets the build environment a machine with the latest Ubuntu installed
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v2 # Adds a step to checkout the repository code
+    - uses: actions/setup-dotnet@v1 # Adds a step to setup the .NET
+      with:
+        dotnet-version: '3.1.x'      
+    
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v1
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_HUB_USER }}
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}    
+
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile        
+        push: true
+        tags: veeramasa/dotnettemplate:latest
+        run: exit 0
+      
