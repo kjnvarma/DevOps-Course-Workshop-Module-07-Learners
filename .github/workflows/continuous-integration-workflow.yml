@@ -65,12 +65,13 @@ jobs:
         file: ./Dockerfile        
         push: true
         tags: kjnvarma/dotnettemplate:latest
-
-      - name: Heroku/buid
-      - uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: "netappmyapp" #Must be unique in Heroku
-          heroku_email: "kjnvarma@gmail.com"
-          usedocker: true
+        run: exit 0
+        
+    - name: Heroku/buid
+      uses: akhileshns/heroku-deploy@v3.6.8 # This is the action
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "netappmyapp" #Must be unique in Heroku
+        heroku_email: "kjnvarma@gmail.com"
+        usedocker: true
       
